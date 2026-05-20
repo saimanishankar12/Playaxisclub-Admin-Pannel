@@ -348,6 +348,13 @@
 </a>
 
 
+<a href="{{ route('admin-register-player') }}"
+   class="pac-nav-link {{ request()->routeIs('register-player') ? 'active' : '' }}">
+   <i class="fas fa-user-plus"></i>
+    <span>Register Players</span>
+</a>
+
+
 
 
 

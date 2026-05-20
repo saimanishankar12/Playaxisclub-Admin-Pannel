@@ -195,19 +195,14 @@
                         {{-- Registered --}}
                         <td style="font-size:.75rem;color:#64748b;white-space:nowrap;">{{ \Carbon\Carbon::parse($p1->created_at)->format('d M Y, g:i A') }}</td>
 
-                        {{-- Action --}}
-                        <td>
-                            <div class="ur-actions">
-                                <a href="{{ route('admin-users.edit', $p1->id) }}" class="ur-btn-edit">
-                                    <i class="fas fa-edit"></i> Edit P1
-                                </a>
-                                @if($p2)
-                                    <a href="{{ route('admin-users.edit', $p2->id) }}" class="ur-btn-edit">
-                                        <i class="fas fa-edit"></i> Edit P2
-                                    </a>
-                                @endif
-                            </div>
-                        </td>
+                      
+                    <td>
+                     <div class="ur-actions">
+                     <a href="{{ route('admin-users.doubles.edit-pair', $pair['season_id']) }}" class="ur-btn-edit">
+                    <i class="fas fa-edit"></i> Edit Pair
+                  </a>
+                 </div>
+                 </td>
                     </tr>
                     @endforeach
                 </tbody>

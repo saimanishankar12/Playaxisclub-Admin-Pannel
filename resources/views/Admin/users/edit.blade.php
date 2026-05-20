@@ -1,7 +1,5 @@
 @extends('Admin.layouts.app')
-
 @section('title', 'Edit Player — ' . $player->player_id)
-
 @section('content')
 
 {{-- ── Page heading ───────────────────────────────────────────────────────── --}}

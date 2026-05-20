@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PlayaxisclubUserController;
 use App\Http\Controllers\Admin\EkalavyaBadmintonTournamentS1Controller;
 use App\Http\Controllers\Admin\PlayaxisclubTotalRevenueController;
 use App\Http\Controllers\Admin\AdminForgotPasswordController;
+use App\Http\Controllers\Admin\AdminRegisterPlayerController;
 use App\Http\Controllers\Admin\AdminUserReportController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\AudienceController;
@@ -61,6 +62,10 @@ Route::prefix('admin')->name('admin-')->group(function () {
 
     Route::middleware(['admin.auth', 'no.cache'])->group(function () {
 
+ 
+Route::get('/register-player',          [AdminRegisterPlayerController::class, 'index'])           ->name('register-player');
+Route::post('/register-player/singles', [AdminRegisterPlayerController::class, 'registerSingles']) ->name('admin-register-player.singles');
+Route::post('/register-player/doubles', [AdminRegisterPlayerController::class, 'registerDoubles']) ->name('admin-register-player.doubles');
         // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('/seasons', [DashboardController::class, 'storeSeason'])->name('seasons-store');
@@ -148,6 +153,8 @@ Route::prefix('admin/users')->name('admin-users.')->middleware(['admin.auth', 'n
     Route::get('/not-paid/{seasonId}/doubles/{age}',             [AdminUserReportController::class, 'notPaidDoubles'])      ->name('notpaid.doubles');
     Route::get('/{id}/edit',                                     [AdminUserReportController::class, 'edit'])   ->name('edit');
     Route::put('/{id}',                                          [AdminUserReportController::class, 'update']) ->name('update');
+    Route::get('/doubles/{seasonId}/edit-pair',                  [AdminUserReportController::class, 'editPair'])   ->name('doubles.edit-pair');
+    Route::put('/doubles/{seasonId}/update-pair',                [AdminUserReportController::class, 'updatePair']) ->name('doubles.update-pair');
 
 });
 

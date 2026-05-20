@@ -83,12 +83,11 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Season ID</th> 
                         <th>Player</th>
                         <th>Contact</th>
                         <th>State</th>
-                        <th>Gender</th>
                         <th>Age</th>
-                        <th>Sport</th>
                         <th>T-Shirt</th>
                         <th>Profile Photo</th>
                         <th>Aadhar Proof</th>
@@ -102,6 +101,10 @@
                     @foreach($players as $i => $p)
                     <tr>
                         <td style="color:#94a3b8;font-size:.72rem;">{{ $loop->iteration }}</td>
+                        <td style="color:#94a3b8;font-size:.72rem;">{{ $loop->iteration }}</td>
+<td><span style="font-size:.68rem;font-family:'DM Mono',monospace;color:#7c3aed;font-weight:600;">{{ $p->season_id }}</span></td>  {{-- ADD THIS --}}
+<td>
+    <div class="ur-player-name">{{ $p->name }}</div>
                         <td>
                             <div class="ur-player-name">{{ $p->name }}</div>
                             <div class="ur-player-id">{{ $p->player_id }}</div>
@@ -110,10 +113,11 @@
                             <div class="ur-email">{{ $p->email }}</div>
                             <div class="ur-phone">{{ $p->phone }}</div>
                         </td>
-                        <td style="font-size:.8rem;color:#475569;">{{ $p->state_name ?? '—' }}</td>
-                        <td style="font-size:.8rem;">{{ $p->gender }}</td>
+                         <td style="font-size:.8rem;color:#475569;">{{ $p->state_name ?? '—' }}</td>
+                        
+                    
                         <td style="font-size:.8rem;">{{ $p->age }}</td>
-                        <td style="font-size:.8rem;">{{ $p->sport }}</td>
+                        
                         <td style="font-size:.8rem;">{{ $p->tshirt_size }}</td>
 
                         {{-- Profile Photo --}}

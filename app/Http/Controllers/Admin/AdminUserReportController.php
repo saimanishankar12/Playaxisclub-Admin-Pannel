@@ -298,7 +298,7 @@ class AdminUserReportController extends Controller
             ->where('p.payment_status', 'pending')
             ->where('p.mode', 'singles')
             ->where('p.age', $age)
-            ->select('p.id','p.player_id','p.name','p.email','p.phone',
+            ->select('p.id','p.player_id','p.season_id','p.name','p.email','p.phone',
                      'p.gender','p.age','p.sport','p.tshirt_size',
                      'p.mode','p.payment_status','p.created_at',
                      's.name as state_name','p.profile_photo','p.aadhar_proof')
@@ -331,4 +331,110 @@ class AdminUserReportController extends Controller
         $count = $pairs->count();
         return view('Admin.users.notpaid.doubles', compact('season', 'pairs', 'count', 'age'));
     }
+
+
+    public function editPair(string $seasonId)
+{
+    $players = Player::with('state')
+        ->where('season_id', $seasonId)
+        ->where('mode', 'doubles')
+        ->get();
+
+    if ($players->count() !== 2) {
+        return redirect()->back()->with('error', 'Doubles pair not found.');
+    }
+
+    $p1     = $players->first();
+    $p2     = $players->last();
+    $states = State::orderBy('name')->get();
+
+    return view('Admin.users.edit-pair', compact('p1', 'p2', 'states', 'seasonId'));
+}
+
+public function updatePair(Request $request, string $seasonId)
+{
+    $players = Player::where('season_id', $seasonId)
+        ->where('mode', 'doubles')
+        ->get();
+
+    if ($players->count() !== 2) {
+        return redirect()->back()->with('error', 'Doubles pair not found.');
+    }
+
+    $p1 = $players->first();
+    $p2 = $players->last();
+
+    $request->validate([
+        'p1_name'          => 'required|string|max:255',
+        'p1_phone'         => 'required|string|max:20',
+        'p1_gender'        => 'required|in:Male,Female',
+        'p1_age'           => 'required|in:U-11,U-13,U-15,U-19',
+        'p1_tshirt_size'   => 'required|in:XS,S,M,L,XL,XXL',
+        'p1_state_id'      => 'nullable|exists:states,id',
+        'p1_address'       => 'nullable|string|max:500',
+        'p1_profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        'p1_aadhar_proof'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:4096',
+
+        'p2_name'          => 'required|string|max:255',
+        'p2_phone'         => 'required|string|max:20',
+        'p2_gender'        => 'required|in:Male,Female',
+        'p2_age'           => 'required|in:U-11,U-13,U-15,U-19',
+        'p2_tshirt_size'   => 'required|in:XS,S,M,L,XL,XXL',
+        'p2_state_id'      => 'nullable|exists:states,id',
+        'p2_address'       => 'nullable|string|max:500',
+        'p2_profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        'p2_aadhar_proof'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:4096',
+    ]);
+
+    if ($request->p1_age !== $request->p2_age) {
+        return back()->withErrors(['p2_age' => 'Both players must be in the same age category.'])->withInput();
+    }
+      $paymentStatus = $request->payment_status ?? $p1->payment_status;
+
+    // Update Player 1
+    $p1Data = [
+        'name'           => $request->p1_name,
+        'phone'          => $request->p1_phone,
+        'gender'         => $request->p1_gender,
+        'age'            => $request->p1_age,
+        'tshirt_size'    => $request->p1_tshirt_size,
+        'state_id'       => $request->p1_state_id,
+        'address'        => $request->p1_address,
+        'payment_status' => $paymentStatus,
+        // 'payment_status' => $request->p1_payment_status ?? $p1->payment_status,
+    ];
+    if ($request->hasFile('p1_profile_photo')) {
+        if ($p1->profile_photo) Storage::disk('public')->delete($p1->profile_photo);
+        $p1Data['profile_photo'] = $request->file('p1_profile_photo')->store('profile_photos', 'public');
+    }
+    if ($request->hasFile('p1_aadhar_proof')) {
+        if ($p1->aadhar_proof) Storage::disk('public')->delete($p1->aadhar_proof);
+        $p1Data['aadhar_proof'] = $request->file('p1_aadhar_proof')->store('aadhar_proofs', 'public');
+    }
+    $p1->update($p1Data);
+
+    // Update Player 2
+    $p2Data = [
+        'name'           => $request->p2_name,
+        'phone'          => $request->p2_phone,
+        'gender'         => $request->p2_gender,
+        'age'            => $request->p2_age,
+        'tshirt_size'    => $request->p2_tshirt_size,
+        'state_id'       => $request->p2_state_id,
+        'address'        => $request->p2_address,
+        'payment_status' => $paymentStatus,
+        // 'payment_status' => $request->p2_payment_status ?? $p2->payment_status,
+    ];
+    if ($request->hasFile('p2_profile_photo')) {
+        if ($p2->profile_photo) Storage::disk('public')->delete($p2->profile_photo);
+        $p2Data['profile_photo'] = $request->file('p2_profile_photo')->store('profile_photos', 'public');
+    }
+    if ($request->hasFile('p2_aadhar_proof')) {
+        if ($p2->aadhar_proof) Storage::disk('public')->delete($p2->aadhar_proof);
+        $p2Data['aadhar_proof'] = $request->file('p2_aadhar_proof')->store('aadhar_proofs', 'public');
+    }
+    $p2->update($p2Data);
+
+    return redirect()->back()->with('success', "Doubles pair {$seasonId} updated successfully.");
+}
 }
