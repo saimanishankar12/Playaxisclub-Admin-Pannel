@@ -35,8 +35,7 @@
     .ur-empty { padding:48px;text-align:center;color:#94a3b8;font-size:.875rem; }
     .ur-empty i { font-size:2rem;opacity:.25;display:block;margin-bottom:12px; }
     .ur-count-chip { display:inline-flex;align-items:center;gap:5px;background:#f1f5f9;border-radius:8px;padding:4px 10px;font-size:.75rem;font-weight:600;color:#475569; }
-
-    /* Action button */
+    .ur-season-id { font-size:.68rem;font-family:'DM Mono',monospace;color:#7c3aed;font-weight:600; }
     .ur-actions { display:flex;align-items:center;gap:6px; }
     .ur-btn-edit {
         display:inline-flex;align-items:center;gap:4px;
@@ -45,10 +44,6 @@
         border:none;cursor:pointer;transition:background .15s;
     }
     .ur-btn-edit:hover { background:#3a5fc8;color:#fff; }
-
-    /* Pagination */
-    .ur-pagination { padding:16px 20px;border-top:1px solid #e2e8f0;background:#f8fafc; }
-
     @media(max-width:576px){ .ur-search{width:140px;} }
 </style>
 @endsection
@@ -83,7 +78,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Season ID</th> 
+                        <th>Season ID</th>
                         <th>Player</th>
                         <th>Contact</th>
                         <th>State</th>
@@ -98,13 +93,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($players as $i => $p)
+                    @foreach($players as $p)
                     <tr>
                         <td style="color:#94a3b8;font-size:.72rem;">{{ $loop->iteration }}</td>
-                        <td style="color:#94a3b8;font-size:.72rem;">{{ $loop->iteration }}</td>
-<td><span style="font-size:.68rem;font-family:'DM Mono',monospace;color:#7c3aed;font-weight:600;">{{ $p->season_id }}</span></td>  {{-- ADD THIS --}}
-<td>
-    <div class="ur-player-name">{{ $p->name }}</div>
+                        <td><span class="ur-season-id">{{ $p->season_id }}</span></td>
                         <td>
                             <div class="ur-player-name">{{ $p->name }}</div>
                             <div class="ur-player-id">{{ $p->player_id }}</div>
@@ -113,14 +105,9 @@
                             <div class="ur-email">{{ $p->email }}</div>
                             <div class="ur-phone">{{ $p->phone }}</div>
                         </td>
-                         <td style="font-size:.8rem;color:#475569;">{{ $p->state_name ?? '—' }}</td>
-                        
-                    
+                        <td style="font-size:.8rem;color:#475569;">{{ $p->state_name ?? '—' }}</td>
                         <td style="font-size:.8rem;">{{ $p->age }}</td>
-                        
                         <td style="font-size:.8rem;">{{ $p->tshirt_size }}</td>
-
-                        {{-- Profile Photo --}}
                         <td>
                             @if($p->profile_photo)
                                 <a href="{{ asset('storage/' . $p->profile_photo) }}" target="_blank">
@@ -131,8 +118,6 @@
                                 <span style="color:#94a3b8;">—</span>
                             @endif
                         </td>
-
-                        {{-- Aadhar Proof --}}
                         <td>
                             @if($p->aadhar_proof)
                                 <a href="{{ asset('storage/' . $p->aadhar_proof) }}" target="_blank">
@@ -143,12 +128,9 @@
                                 <span style="color:#94a3b8;">—</span>
                             @endif
                         </td>
-
                         <td><span class="ur-badge ur-badge--singles"><i class="fas fa-user" style="font-size:.5rem;"></i> Singles</span></td>
                         <td><span class="ur-badge ur-badge--pending"><i class="fas fa-clock" style="font-size:.5rem;"></i> Pending</span></td>
                         <td style="font-size:.75rem;color:#64748b;white-space:nowrap;">{{ \Carbon\Carbon::parse($p->created_at)->format('d M Y, g:i A') }}</td>
-
-                        {{-- Action --}}
                         <td>
                             <div class="ur-actions">
                                 <a href="{{ route('admin-users.edit', $p->id) }}" class="ur-btn-edit">
@@ -160,7 +142,6 @@
                     @endforeach
                 </tbody>
             </table>
-
         @endif
     </div>
 </div>

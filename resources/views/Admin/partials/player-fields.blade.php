@@ -35,15 +35,14 @@
     {{-- State --}}
     <div class="rp-field">
         <label>State <span>*</span></label>
-        <select name="{{ $prefix }}state_id" style="{{ $errors->has($old_prefix . 'state_id') ? 'border-color:#ef4444;' : '' }}">
-            <option value="">Select State</option>
-            @foreach($states as $state)
-                <option value="{{ $state->id }}" {{ old($old_prefix . 'state_id') == $state->id ? 'selected' : '' }}>
-                    {{ $state->name }}
-                </option>
-            @endforeach
-        </select>
-        @error($old_prefix . 'state_id') <p class="rp-err">{{ $message }}</p> @enderror
+        <select name="{{ $prefix }}state_id" ...>
+    <option value="">Select State</option>
+    @foreach($states->filter(fn($s) => in_array(trim($s->name), ['Andhra Pradesh', 'Telangana'])) as $state)
+        <option value="{{ $state->id }}" {{ old($old_prefix . 'state_id') == $state->id ? 'selected' : '' }}>
+            {{ $state->name }}
+        </option>
+    @endforeach
+</select>
     </div>
 
     {{-- Age --}}
@@ -73,8 +72,7 @@
         <label>Gender <span>*</span></label>
         <select name="{{ $prefix }}gender" style="{{ $errors->has($old_prefix . 'gender') ? 'border-color:#ef4444;' : '' }}">
             <option value="">Select Gender</option>
-            <option value="Male"   {{ old($old_prefix . 'gender') === 'Male'   ? 'selected' : '' }}>Male</option>
-            <option value="Female" {{ old($old_prefix . 'gender') === 'Female' ? 'selected' : '' }}>Female</option>
+           <option value="Male" {{ old($old_prefix . 'gender', 'Male') === 'Male' ? 'selected' : '' }}>Male</option>
         </select>
         @error($old_prefix . 'gender') <p class="rp-err">{{ $message }}</p> @enderror
     </div>

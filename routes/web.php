@@ -62,10 +62,18 @@ Route::prefix('admin')->name('admin-')->group(function () {
 
     Route::middleware(['admin.auth', 'no.cache'])->group(function () {
 
- 
-Route::get('/register-player',          [AdminRegisterPlayerController::class, 'index'])           ->name('register-player');
-Route::post('/register-player/singles', [AdminRegisterPlayerController::class, 'registerSingles']) ->name('admin-register-player.singles');
-Route::post('/register-player/doubles', [AdminRegisterPlayerController::class, 'registerDoubles']) ->name('admin-register-player.doubles');
+         Route::get('/register-player/confirm', function() {
+    if (!session('mode')) return redirect()->route('admin-register-player');
+    return view('Admin.register-confirm', [
+        'mode'   => session('mode'),
+        'player' => session('player'),
+        'p1'     => session('p1'),
+        'p2'     => session('p2'),
+    ]);
+})->name('admin-register-player.confirm');
+        Route::get('/register-player',          [AdminRegisterPlayerController::class, 'index'])           ->name('register-player');
+        Route::post('/register-player/singles', [AdminRegisterPlayerController::class, 'registerSingles']) ->name('admin-register-player.singles');
+        Route::post('/register-player/doubles', [AdminRegisterPlayerController::class, 'registerDoubles']) ->name('admin-register-player.doubles');
         // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('/seasons', [DashboardController::class, 'storeSeason'])->name('seasons-store');

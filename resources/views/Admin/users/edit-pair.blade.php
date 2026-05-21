@@ -50,7 +50,7 @@
 {{-- ── Readonly banner ── --}}
 <div class="eu-readonly-banner">
     <i class="fas fa-lock"></i>
-    <span><strong>Player ID</strong>, <strong>Season ID</strong>, <strong>Sport</strong>, <strong>Email</strong> and <strong>Mode</strong> are locked and cannot be changed.</span>
+   <span><strong>Player ID</strong>, <strong>Season ID</strong>, <strong>Sport</strong> and <strong>Mode</strong> are locked and cannot be changed.</span>
 </div>
 
 {{-- ── Age mismatch warning ── --}}
@@ -128,10 +128,7 @@
                         <label class="eu-label">Season ID</label>
                         <div class="eu-locked-input"><i class="fas fa-lock eu-lock-icon"></i>{{ $p1->season_id }}</div>
                     </div>
-                    <div class="eu-field">
-                        <label class="eu-label">Email</label>
-                        <div class="eu-locked-input"><i class="fas fa-lock eu-lock-icon"></i>{{ $p1->email }}</div>
-                    </div>
+                 
                     <div class="eu-field">
                         <label class="eu-label">Sport</label>
                         <div class="eu-locked-input"><i class="fas fa-lock eu-lock-icon"></i>{{ $p1->sport }}</div>
@@ -173,6 +170,12 @@
                                 <option value="Female" {{ old('p1_gender', $p1->gender) === 'Female' ? 'selected' : '' }}>Female</option>
                             </select>
                         </div>
+                        <div class="eu-field">
+    <label class="eu-label">Email <span class="eu-req">*</span></label>
+    <input type="email" name="p1_email" class="eu-input"
+           value="{{ old('p1_email', $p1->email) }}" placeholder="Email address" required>
+    @error('p1_email')<div class="eu-error">{{ $message }}</div>@enderror
+</div>
                         <div class="eu-field">
                             <label class="eu-label">State</label>
                             <select name="p1_state_id" class="eu-select">
@@ -216,28 +219,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- @if($p1->payment_status === 'pending')
-            <div class="eu-card mt-3 eu-card--payment">
-                <div class="eu-card-header eu-card-header--payment">
-                    <i class="fas fa-credit-card"></i> Payment Status — Player 1
-                    <span class="eu-payment-editable-badge">Admin Override</span>
-                </div>
-                <div class="eu-card-body">
-                    <p class="eu-payment-notice"><i class="fas fa-info-circle"></i> Changing to <strong>Paid</strong> will move this player to the paid list immediately.</p>
-                    <div class="eu-field" style="margin-bottom:0;">
-                        <label class="eu-label">Payment Status <span class="eu-req">*</span></label>
-                        <select name="p1_payment_status" class="eu-select eu-select--payment" onchange="onPaymentChange(this,'p1PaymentWarning')">
-                            <option value="pending" {{ old('p1_payment_status', $p1->payment_status) === 'pending' ? 'selected' : '' }}>⏳ Pending</option>
-                            <option value="paid"    {{ old('p1_payment_status', $p1->payment_status) === 'paid'    ? 'selected' : '' }}>✅ Paid</option>
-                        </select>
-                    </div>
-                    <div id="p1PaymentWarning" class="eu-payment-warning" style="display:none;">
-                        <i class="fas fa-exclamation-triangle"></i> You are marking Player 1 as <strong>Paid</strong>. Make sure this is correct before saving.
-                    </div>
-                </div>
-            </div>
-            @endif -->
 
         </div>
     </div>
@@ -310,10 +291,6 @@
                         <div class="eu-locked-input"><i class="fas fa-lock eu-lock-icon"></i>{{ $p2->season_id }}</div>
                     </div>
                     <div class="eu-field">
-                        <label class="eu-label">Email</label>
-                        <div class="eu-locked-input"><i class="fas fa-lock eu-lock-icon"></i>{{ $p2->email }}</div>
-                    </div>
-                    <div class="eu-field">
                         <label class="eu-label">Sport</label>
                         <div class="eu-locked-input"><i class="fas fa-lock eu-lock-icon"></i>{{ $p2->sport }}</div>
                     </div>
@@ -364,6 +341,12 @@
                             </select>
                         </div>
                     </div>
+                    <div class="eu-field">
+    <label class="eu-label">Email <span class="eu-req">*</span></label>
+    <input type="email" name="p1_email" class="eu-input"
+           value="{{ old('p1_email', $p1->email) }}" placeholder="Email address" required>
+    @error('p1_email')<div class="eu-error">{{ $message }}</div>@enderror
+</div>
                     <div class="eu-field">
                         <label class="eu-label">Address</label>
                         <textarea name="p2_address" rows="2" class="eu-input eu-textarea" placeholder="Full address">{{ old('p2_address', $p2->address) }}</textarea>

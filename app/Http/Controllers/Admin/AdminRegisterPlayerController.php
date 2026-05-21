@@ -119,7 +119,11 @@ class AdminRegisterPlayerController extends Controller
             return $player;
         });
 
-        return back()->with('success', "Singles player registered successfully! Player ID: {$player->player_id} | Season ID: {$player->season_id}");
+        // return back()->with('success', "Singles player registered successfully! Player ID: {$player->player_id} | Season ID: {$player->season_id}");
+        return redirect()->route('admin-admin-register-player.confirm')->with([
+    'mode'   => 'singles',
+    'player' => $player,
+]);
     }
 
     /* ─────────────────────────────
@@ -301,7 +305,12 @@ class AdminRegisterPlayerController extends Controller
 
         [$p1, $p2, $seasonId] = $data;
 
-        return back()->with('success', "Doubles pair registered successfully! Player 1 ID: {$p1->player_id} | Player 2 ID: {$p2->player_id} | Season ID: {$seasonId}");
+        // return back()->with('success', "Doubles pair registered successfully! Player 1 ID: {$p1->player_id} | Player 2 ID: {$p2->player_id} | Season ID: {$seasonId}");
+        return redirect()->route('admin-admin-register-player.confirm')->with([
+    'mode' => 'doubles',
+    'p1'   => $p1,
+    'p2'   => $p2,
+]);
     }
 
     /* ─── ID Generators (same logic as TournamentController) ─────────────── */
